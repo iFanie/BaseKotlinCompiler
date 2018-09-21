@@ -4,7 +4,7 @@ buildscript {
                 GROUP_ID : 'com.izikode.izilib',
 
                 REPO : 'izilib',
-                NAME : 'basekotlincompiler',
+                NAME : 'base-kotlin-compiler',
 
                 DESCRIPTION : 'Kotlin utility abstraction level above the Java annotation processor',
 
@@ -22,10 +22,10 @@ buildscript {
 
         Version = [
                 Build : [
-                        CODE    : 1,
+                        CODE    : 2,
 
                         MAJOR   : 0,
-                        MINOR   : 1,
+                        MINOR   : 2,
 
                         getNAME : {
                             return "${ Version.Build.MAJOR }.${ Version.Build.MINOR }"
