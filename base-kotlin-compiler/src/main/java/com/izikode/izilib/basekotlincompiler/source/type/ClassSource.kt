@@ -2,8 +2,10 @@ package com.izikode.izilib.basekotlincompiler.source.type
 
 import com.izikode.izilib.basekotlincompiler.CompilationUtilities
 import com.izikode.izilib.basekotlincompiler.source.AbstractSource
+import com.izikode.izilib.basekotlincompiler.source.enclosure.EnclosureSource
 import com.izikode.izilib.basekotlincompiler.source.member.field.AnnotatedVariableSource
 import com.izikode.izilib.basekotlincompiler.source.member.method.AnnotatedFunctionSource
+import javax.lang.model.element.PackageElement
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.ElementFilter
 import kotlin.reflect.KClass
@@ -15,6 +17,7 @@ open class ClassSource(
 
 ) : AbstractSource(typeElement, compilationUtilities) {
 
+    val parent by lazy { EnclosureSource(typeElement.enclosingElement as PackageElement, compilationUtilities) }
     val info by lazy { Info(typeElement) }
 
     fun <VariableAnnotation> variablesWith(annotation: KClass<out VariableAnnotation>)

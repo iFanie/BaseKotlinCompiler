@@ -2,7 +2,9 @@ package com.izikode.izilib.basekotlincompiler.source.member
 
 import com.izikode.izilib.basekotlincompiler.CompilationUtilities
 import com.izikode.izilib.basekotlincompiler.source.AbstractSource
+import com.izikode.izilib.basekotlincompiler.source.type.ClassSource
 import javax.lang.model.element.Element
+import javax.lang.model.element.TypeElement
 
 abstract class AbstractMemberSource(
 
@@ -11,6 +13,7 @@ abstract class AbstractMemberSource(
 
 ) : AbstractSource(element, compilationUtilities) {
 
+    val parent by lazy { ClassSource(element.enclosingElement as TypeElement, compilationUtilities) }
     val info by lazy { Info(element, compilationUtilities) }
 
     class Info(
