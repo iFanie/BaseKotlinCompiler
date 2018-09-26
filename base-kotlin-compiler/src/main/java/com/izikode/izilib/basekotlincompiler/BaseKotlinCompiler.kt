@@ -32,30 +32,22 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
     }
 
     /**
-     * Class generator.
+     * Utilities for completing compilation rounds.
      */
-    protected lateinit var generator: ClassGenerator
-
-    /**
-     * Handles message printing.
-     */
-    protected lateinit var printer: Printer
-
-    /**
-     * Kit of annotation processing utilities.
-     */
-    protected lateinit var processingKit: ProcessingKit
+    protected lateinit var compilationUtilities: CompilationUtilities
 
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
 
-        generator = ClassGenerator(File(processingEnv.options[KOTLIN_GENERATED_SOURCE]))
-        printer = Printer(processingEnv.messager)
-        processingKit = ProcessingKit(processingEnv.elementUtils, processingEnv.typeUtils)
+        compilationUtilities = CompilationUtilities(
+            ClassGenerator(File(processingEnv.options[KOTLIN_GENERATED_SOURCE])),
+            Printer(processingEnv.messager),
+            ProcessingKit(processingEnv.elementUtils, processingEnv.typeUtils)
+        )
     }
 
     override fun process(annotations: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
-        handle(CompilationRound(processingKit, annotations, roundEnv))
+        handle(CompilationRound(compilationUtilities, annotations, roundEnv))
 
         if (roundEnv.processingOver()) {
             finally()

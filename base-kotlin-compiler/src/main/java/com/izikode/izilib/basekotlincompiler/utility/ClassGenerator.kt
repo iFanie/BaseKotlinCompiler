@@ -1,6 +1,6 @@
 package com.izikode.izilib.basekotlincompiler.utility
 
-import com.izikode.izilib.basekotlincompiler.AbstractKotlinClass
+import com.izikode.izilib.basekotlincompiler.component.AbstractKotlinClass
 import java.io.File
 
 class ClassGenerator(private val sourceDir: File) {
