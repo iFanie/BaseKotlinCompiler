@@ -20,6 +20,15 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
     override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.RELEASE_8
 
     /**
+     * Provides the directory for generated source classes.
+     * <i>By default, uses the [KOTLIN_GENERATED_SOURCE] argument.</i>
+     *
+     * @param options  The processing environment arguments.
+     * @return The generated source directory.
+     */
+    open fun getGeneratedSourceDirectory(options: Map<String, String>) = File(options[KOTLIN_GENERATED_SOURCE])
+
+    /**
      * Array of annotation classes processed by this compiler.
      */
     abstract val processes: Array<KClass<out Any>>
@@ -41,7 +50,7 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
 
         compilationUtilities = CompilationUtilities(
                 processingEnv.options,
-                ClassGenerator(File(processingEnv.options[KOTLIN_GENERATED_SOURCE])),
+                ClassGenerator(getGeneratedSourceDirectory(processingEnv.options)),
                 Printer(processingEnv.messager),
                 ProcessingKit(processingEnv.elementUtils, processingEnv.typeUtils)
         )
