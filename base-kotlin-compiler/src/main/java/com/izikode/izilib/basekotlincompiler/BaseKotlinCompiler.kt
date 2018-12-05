@@ -25,10 +25,10 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
     abstract val processes: Array<KClass<out Any>>
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> {
-        val types = arrayListOf<String>()
+        val types = mutableSetOf<String>()
         processes.forEach { types.add(it.java.canonicalName) }
 
-        return TreeSet(types)
+        return types
     }
 
     /**
