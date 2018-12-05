@@ -40,9 +40,10 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
         super.init(processingEnv)
 
         compilationUtilities = CompilationUtilities(
-            ClassGenerator(File(processingEnv.options[KOTLIN_GENERATED_SOURCE])),
-            Printer(processingEnv.messager),
-            ProcessingKit(processingEnv.elementUtils, processingEnv.typeUtils)
+                processingEnv.options,
+                ClassGenerator(File(processingEnv.options[KOTLIN_GENERATED_SOURCE])),
+                Printer(processingEnv.messager),
+                ProcessingKit(processingEnv.elementUtils, processingEnv.typeUtils)
         )
     }
 
