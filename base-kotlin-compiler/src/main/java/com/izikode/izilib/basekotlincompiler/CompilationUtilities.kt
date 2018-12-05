@@ -6,6 +6,7 @@ import com.izikode.izilib.basekotlincompiler.utility.ProcessingKit
 
 data class CompilationUtilities(
 
+        val options: Map<String, String>,
         val classGenerator: ClassGenerator,
         val printer: Printer,
         val processingKit: ProcessingKit
