@@ -9,4 +9,8 @@ open class FunctionSource(
         protected val executableElement: ExecutableElement,
         compilationUtilities: CompilationUtilities
 
-) : AbstractMemberSource(executableElement, compilationUtilities)
+) : AbstractMemberSource(executableElement, compilationUtilities) {
+
+    override fun toString(): String = executableElement.toString()
+
+}

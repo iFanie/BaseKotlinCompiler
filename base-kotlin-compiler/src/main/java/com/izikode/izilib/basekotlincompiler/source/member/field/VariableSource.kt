@@ -9,4 +9,8 @@ open class VariableSource(
         protected val variableElement: VariableElement,
         compilationUtilities: CompilationUtilities
 
-) : AbstractMemberSource(variableElement, compilationUtilities)
+) : AbstractMemberSource(variableElement, compilationUtilities) {
+
+    override fun toString(): String = variableElement.toString()
+
+}

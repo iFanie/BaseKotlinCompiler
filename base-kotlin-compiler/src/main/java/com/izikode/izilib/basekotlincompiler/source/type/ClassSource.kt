@@ -56,6 +56,8 @@ open class ClassSource(
         return methods
     }
 
+    override fun toString(): String = typeElement.toString()
+
     class Info(private val typeElement: TypeElement) {
 
         val name: String
