@@ -9,4 +9,8 @@ class AnnotatedFunctionSource<FunctionAnnotation>(
         val annotation: FunctionAnnotation,
         compilationUtilities: CompilationUtilities
 
-) : FunctionSource(executableElement, compilationUtilities) where FunctionAnnotation : Annotation
+) : FunctionSource(executableElement, compilationUtilities) where FunctionAnnotation : Annotation {
+
+    override fun toString(): String = super.toString()
+
+}

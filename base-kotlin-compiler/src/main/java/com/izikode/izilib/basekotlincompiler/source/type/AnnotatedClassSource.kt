@@ -9,4 +9,8 @@ class AnnotatedClassSource<ClassAnnotation>(
         val annotation: ClassAnnotation,
         compilationUtilities: CompilationUtilities
 
-) : ClassSource(typeElement, compilationUtilities) where ClassAnnotation : Annotation
+) : ClassSource(typeElement, compilationUtilities) where ClassAnnotation : Annotation {
+
+    override fun toString(): String = super.toString()
+
+}

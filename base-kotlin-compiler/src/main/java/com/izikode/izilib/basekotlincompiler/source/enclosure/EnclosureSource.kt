@@ -20,4 +20,6 @@ class EnclosureSource(
 
     }
 
+    override fun toString(): String = packageElement.toString()
+
 }
