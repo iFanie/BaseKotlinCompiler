@@ -22,10 +22,10 @@ buildscript {
 
         Version = [
                 Build : [
-                        CODE    : 6,
+                        CODE    : 8,
 
                         MAJOR   : 0,
-                        MINOR   : 6,
+                        MINOR   : 8,
 
                         getNAME : {
                             return "${ Version.Build.MAJOR }.${ Version.Build.MINOR }"
@@ -37,7 +37,7 @@ buildscript {
                         MAVEN   : '2.0',
                         BINTRAY : '1.8.0',
                         JAVA    : '1.8',
-                        KOTLIN  : '1.3.10'
+                        KOTLIN  : '1.3.11'
                 ],
 
                 Dependency : [

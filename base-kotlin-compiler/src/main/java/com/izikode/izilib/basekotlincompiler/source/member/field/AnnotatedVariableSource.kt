@@ -9,4 +9,8 @@ class AnnotatedVariableSource<VariableAnnotation>(
         val annotation: VariableAnnotation,
         compilationUtilities: CompilationUtilities
 
-) : VariableSource(variableElement, compilationUtilities) where VariableAnnotation : Annotation
+) : VariableSource(variableElement, compilationUtilities) where VariableAnnotation : Annotation {
+
+    override fun toString(): String = super.toString()
+
+}
