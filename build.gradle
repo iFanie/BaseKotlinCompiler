@@ -22,10 +22,10 @@ buildscript {
 
         Version = [
                 Build : [
-                        CODE    : 8,
+                        CODE    : 9,
 
                         MAJOR   : 0,
-                        MINOR   : 8,
+                        MINOR   : 9,
 
                         getNAME : {
                             return "${ Version.Build.MAJOR }.${ Version.Build.MINOR }"
