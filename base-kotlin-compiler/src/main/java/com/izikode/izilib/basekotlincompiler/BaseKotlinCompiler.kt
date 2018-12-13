@@ -79,6 +79,16 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
         }
     }
 
+    private fun finally(compilationUtilities: CompilationUtilities) {
+        object : FinallyHandler(compilationUtilities) {
+
+            override fun handleFinally() {
+                finallyHandler()
+            }
+
+        }
+    }
+
     /**
      * Invoked on every processing round.
      */
@@ -87,7 +97,7 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
     /**
      * Invoked after the last processing round ends.
      */
-    abstract fun finally()
+    abstract val finallyHandler: FinallyHandler.() -> Unit
 
     abstract class CompilationRoundHandler(private val compilationRound: CompilationRound) {
 
@@ -112,6 +122,22 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
                 block: (ArrayList<AnnotatedFunctionSource<FunctionAnnotation>>) -> Unit) {
 
             block(compilationRound.functionsWith(functionAnnotation))
+        }
+
+    }
+
+    abstract class FinallyHandler(private val compilationUtilities: CompilationUtilities) {
+
+        protected abstract fun handleFinally()
+
+        fun generateClass(block: () -> AbstractKotlinClass) {
+            compilationUtilities.classGenerator.generate(block())
+        }
+
+        fun generateClasses(block: () -> Array<out AbstractKotlinClass>) {
+            block().forEach {
+                compilationUtilities.classGenerator.generate(it)
+            }
         }
 
     }
