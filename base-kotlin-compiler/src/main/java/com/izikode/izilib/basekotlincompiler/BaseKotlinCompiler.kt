@@ -1,5 +1,6 @@
 package com.izikode.izilib.basekotlincompiler
 
+import com.izikode.izilib.basekotlincompiler.component.AbstractKotlinClass
 import com.izikode.izilib.basekotlincompiler.component.CompilationRound
 import com.izikode.izilib.basekotlincompiler.source.member.field.AnnotatedVariableSource
 import com.izikode.izilib.basekotlincompiler.source.member.method.AnnotatedFunctionSource
@@ -46,7 +47,10 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
     /**
      * Utilities for completing compilation rounds.
      */
-    protected lateinit var compilationUtilities: CompilationUtilities
+    protected var compilationUtilities: CompilationUtilities? = null
+        private set(value) {
+            field = value
+        }
 
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
@@ -60,10 +64,12 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
     }
 
     override fun process(annotations: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
-        handle(CompilationRound(compilationUtilities, annotations, roundEnv))
+        compilationUtilities?.let {
+            handle(CompilationRound(it, annotations, roundEnv))
 
-        if (roundEnv.processingOver()) {
-            finally()
+            if (roundEnv.processingOver()) {
+                finally(it)
+            }
         }
 
         return true
