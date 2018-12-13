@@ -1,6 +1,9 @@
 package com.izikode.izilib.basekotlincompiler
 
 import com.izikode.izilib.basekotlincompiler.component.CompilationRound
+import com.izikode.izilib.basekotlincompiler.source.member.field.AnnotatedVariableSource
+import com.izikode.izilib.basekotlincompiler.source.member.method.AnnotatedFunctionSource
+import com.izikode.izilib.basekotlincompiler.source.type.AnnotatedClassSource
 import com.izikode.izilib.basekotlincompiler.utility.ClassGenerator
 import com.izikode.izilib.basekotlincompiler.utility.Printer
 import com.izikode.izilib.basekotlincompiler.utility.ProcessingKit
@@ -66,14 +69,51 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
         return true
     }
 
+    private fun handle(compilationRound: CompilationRound) {
+        object : CompilationRoundHandler(compilationRound) {
+
+            override fun handleRound() {
+                roundHandler()
+            }
+
+        }
+    }
+
     /**
      * Invoked on every processing round.
      */
-    abstract fun handle(compilationRound: CompilationRound)
+    abstract val roundHandler: CompilationRoundHandler.() -> Unit
 
     /**
      * Invoked after the last processing round ends.
      */
     abstract fun finally()
+
+    abstract class CompilationRoundHandler(private val compilationRound: CompilationRound) {
+
+        protected abstract fun handleRound()
+
+        fun <ClassAnnotation : Annotation> fetchClasses(
+                classAnnotation: KClass<ClassAnnotation>,
+                block: (ArrayList<AnnotatedClassSource<ClassAnnotation>>) -> Unit) {
+
+            block(compilationRound.classesWith(classAnnotation))
+        }
+
+        fun <VariableAnnotation : Annotation> fetchVariables(
+                variableAnnotation: KClass<VariableAnnotation>,
+                block: (ArrayList<AnnotatedVariableSource<VariableAnnotation>>) -> Unit) {
+
+            block(compilationRound.variablesWith(variableAnnotation))
+        }
+
+        fun <FunctionAnnotation : Annotation> fetchFunctions(
+                functionAnnotation: KClass<FunctionAnnotation>,
+                block: (ArrayList<AnnotatedFunctionSource<FunctionAnnotation>>) -> Unit) {
+
+            block(compilationRound.functionsWith(functionAnnotation))
+        }
+
+    }
 
 }
