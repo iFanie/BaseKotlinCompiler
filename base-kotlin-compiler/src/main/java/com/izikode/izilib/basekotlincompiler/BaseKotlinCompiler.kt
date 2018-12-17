@@ -82,7 +82,7 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
                 roundHandler()
             }
 
-        }
+        }.handleRound()
     }
 
     private fun finally(compilationUtilities: CompilationUtilities) {
@@ -92,7 +92,7 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
                 finallyHandler()
             }
 
-        }
+        }.handleFinally()
     }
 
     /**
@@ -107,7 +107,7 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
 
     abstract class CompilationRoundHandler(private val compilationRound: CompilationRound) {
 
-        protected abstract fun handleRound()
+        abstract fun handleRound()
 
         fun <ClassAnnotation : Annotation> fetchClasses(
                 classAnnotation: KClass<ClassAnnotation>,
@@ -134,7 +134,7 @@ abstract class BaseKotlinCompiler : AbstractProcessor() {
 
     abstract class FinallyHandler(private val compilationUtilities: CompilationUtilities) {
 
-        protected abstract fun handleFinally()
+        abstract fun handleFinally()
 
         fun generateClass(block: () -> AbstractKotlinClass) {
             compilationUtilities.classGenerator.generate(block())
