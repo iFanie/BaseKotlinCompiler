@@ -71,7 +71,10 @@ class ProcessingKit(private val elementUtils: Elements, private val typeUtils: T
      * @param element  the element being examined
      * @return the kotlin type equivalent's name
      */
-    fun getKotlinType(element: Element): String = TypeMatcher.toKotlinType(element.asType().toString()) +
-            if (element.getAnnotation(org.jetbrains.annotations.NotNull::class.java) == null) "?" else ""
+    fun getKotlinType(element: Element): String = element.asType().toString().let { type ->
+        TypeMatcher.toKotlinType(type) +
+                if (element.getAnnotation(org.jetbrains.annotations.NotNull::class.java) == null
+                        || type.contains("?")) "?" else ""
+    }
 
 }
