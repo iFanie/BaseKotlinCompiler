@@ -2,7 +2,7 @@ package com.izikode.izilib.basekotlincompiler.utility
 
 object TypeMatcher {
 
-    fun toKotlinType(javaType: String) = when(javaType) {
+    fun toKotlinType(javaType: String) = when(cleanup(javaType)) {
 
         "java.lang.String" -> "kotlin.String"
         "java.lang.Integer" -> "kotlin.Int"
@@ -11,5 +11,7 @@ object TypeMatcher {
         else -> javaType
 
     }
+
+    private fun cleanup(javaType: String) = javaType.replace("\\s*\\([^)]*\\)\\s*".toRegex(), "")
 
 }
