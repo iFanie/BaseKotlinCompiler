@@ -1,26 +1,45 @@
 package com.izikode.izilib.basekotlincompiler.utility
 
+import javax.lang.model.element.Element
+
 object TypeMatcher {
 
-    fun toKotlinType(javaType: String) = cleanup(javaType).let { type ->
-        when (type) {
+    fun toKotlinType(element: Element) = cleanup(element.asType().toString()).let { type ->
+            when (type) {
 
-            "int" -> "kotlin.Int"
-            "float" -> "kotlin.Float"
-            "long" -> "kotlin.Long"
-            "boolean" -> "kotlin.Boolean"
+                "boolean" ->    Boolean::class.qualifiedName
+                "byte" ->       Byte::class.qualifiedName
+                "char" ->       Char::class.qualifiedName
+                "short" ->      Short::class.qualifiedName
+                "int" ->        Int::class.qualifiedName
+                "long" ->       Long::class.qualifiedName
+                "float" ->      Float::class.qualifiedName
+                "double" ->     Double::class.qualifiedName
 
-            "java.lang.String" -> "kotlin.String"
-            "java.lang.Integer" -> "kotlin.Int"
-            "java.lang.CharSequence" -> "kotlin.CharSequence"
+                "java.lang.Boolean" ->    parseNullable(Boolean::class.qualifiedName, element)
+                "java.lang.Byte" ->       parseNullable(Byte::class.qualifiedName, element)
+                "java.lang.Char" ->       parseNullable(Char::class.qualifiedName, element)
+                "java.lang.Short" ->      parseNullable(Short::class.qualifiedName, element)
+                "java.lang.Integer" ->    parseNullable(Int::class.qualifiedName, element)
+                "java.lang.Long" ->       parseNullable(Long::class.qualifiedName, element)
+                "java.lang.Float" ->      parseNullable(Float::class.qualifiedName, element)
+                "java.lang.Double" ->     parseNullable(Double::class.qualifiedName, element)
 
-            else -> type
+                "java.lang.String" ->       parseNullable(String::class.qualifiedName, element)
+                "java.lang.CharSequence" -> parseNullable(CharSequence::class.qualifiedName, element)
 
-        }
-    }
+                else -> parseNullable(type, element)
 
-    private fun cleanup(javaType: String)
-            = javaType.replace("\\s*\\([^)]*\\)\\s*".toRegex(), "")
-                      .replace("?", "")
+            }
+        } ?: "kotlin.Any"
+
+    private fun cleanup(javaType: String) = javaType
+            .replace("\\s*\\([^)]*\\)\\s*".toRegex(), "")
+            .replace("?", "")
+
+    private fun parseNullable(type: String?, element: Element) = type?.let { strongType ->
+            strongType + if (element.getAnnotation(org.jetbrains.annotations.NotNull::class.java) == null) "?"
+                            else ""
+        } ?: "kotlin.Any"
 
 }
